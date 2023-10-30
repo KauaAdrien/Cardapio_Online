@@ -5,6 +5,10 @@ $(document).ready(function () {
 var cardapio = {};
 
 var MEU_CARRINHO = [];
+var MEU_ENDERECO = null;
+
+var VALOR_CARRINHO = 0;
+var VALOR_ENTREGA = 5;
 
 cardapio.eventos = {
 
@@ -228,11 +232,16 @@ cardapio.metodos = {
 
                 $("#itensCarrinho").append(temp);
 
+                if ((i + 1) == MEU_CARRINHO.length) {
+                    cardapio.metodos.carregarValores();
+                }
+
             })
 
         }
         else {
             $("#itensCarrinho").html('<p class="carrinho-vazio"><i class="fa fa-shopping-bag"></i> Seu carrinho está vazio.</p>');
+            cardapio.metodos.carregarValores();
         }
 
     },
@@ -274,6 +283,140 @@ cardapio.metodos = {
         
         cardapio.metodos.atuslizarBadgeTotal();
 
+        cardapio.metodos.carregarValores();
+
+    },
+
+    // carrega os valores de Subtotal, Enterga e Total
+    carregarValores: () => {
+
+        VALOR_CARRINHO = 0;
+
+        $("#lblSubTotal").text('R$ 0,00');
+        $("#lblValorEntrega").text('+ R$ 0,00');
+        $("#lblValorTotal").text('R$ 0,00');
+
+        $.each(MEU_CARRINHO, (i, e) => {
+
+            VALOR_CARRINHO += parseFloat(e.price * e.qntd);
+
+            if ((i + 1) == MEU_CARRINHO.length) {
+                $("#lblSubTotal").text(`R$ ${VALOR_CARRINHO.toFixed(2).replace('.', ',')}`);
+                $("#lblValorEntrega").text(`+ R$ ${VALOR_ENTREGA.toFixed(2).replace('.', ',')}`);
+                $("#lblValorTotal").text(`R$ ${(VALOR_CARRINHO + VALOR_ENTREGA).toFixed(2).replace('.', ',')}`);
+            }
+
+        })
+
+    },
+
+    carregarEndereco: () => {
+
+        if (MEU_CARRINHO <= 0) {
+            cardapio.metodos.mensagem('Seu carrinho está vazio.')
+            return;
+        }
+
+        cardapio.metodos.carregarEtapas(2);
+
+    },
+
+    // API viaCEP
+    buscarCep: () => {
+
+        var cep = $("#txtCep").val().trim().replace(/\D/g, '');
+
+        if (cep != "") {
+
+            // expressão regular para validar o cep
+            var validacep = /^[0-9]{8}$/;
+
+            if (validacep.test(cep)) {
+
+                $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function (dados) {
+
+                    if (!("erro" in dados)) {
+
+                        $("#txtEndereco").val(dados.logradouro);
+                        $("#txtBairro").val(dados.bairro);
+                        $("#txtCidade").val(dados.localidade);
+                        $("#ddlUf").val(dados.uf);
+                        $("#txtNumero").focus();
+                    }
+                    else {
+                        cardapio.metodos.mensagem('CEP não encontrado. Preencha os dados manualmente.');
+                        $("#txtEndereco").focus();
+                    }
+
+                })
+
+            }
+            else {
+                cardapio.metodos.mensagem('Formato do CEP inválido.');
+                $("#txtCep").focus();
+            }
+
+        }
+        else {
+            cardapio.metodos.mensagem('Informe o CEP, por favor.');
+            $("#txtCep").focus();
+        }
+
+    },
+
+    //validar os campos obrigatorios da etapa2
+    resumoPedido: () => {
+        
+        let cep = $("#txtCep").val().trim();
+        let endereco = $("#txtEndereco").val().trim();
+        let bairro = $("#txtBairro").val().trim();
+        let cidade = $("#txtCidade").val().trim();
+        let uf = $("#ddlUf").val().trim();
+        let numero = $("#txtNumero").val().trim();
+        let complemento = $("#txtComplemento").val().trim();
+
+        if (cep.length <= 0) {
+            cardapio.metodos.mensagem('Informe o CEP, por favor.');
+            $("#txtCep").focus();
+            return;
+        }
+        if (endereco.length <= 0) {
+            cardapio.metodos.mensagem('Informe o Endereço, por favor.');
+            $("#txtEndereco").focus();
+            return;
+        }
+        if (bairro.length <= 0) {
+            cardapio.metodos.mensagem('Informe o Bairro, por favor.');
+            $("#txtBairro").focus();
+            return;
+        }
+        if (cidade.length <= 0) {
+            cardapio.metodos.mensagem('Informe a Cidade, por favor.');
+            $("#txtCidade").focus();
+            return;
+        }
+        if (uf == "-1") {
+            cardapio.metodos.mensagem('Informe a UF, por favor.');
+            $("#ddlUf").focus();
+            return;
+        }
+        if (numero.length <= 0) {
+            cardapio.metodos.mensagem('Informe o Número, por favor.');
+            $("#txtNumero").focus();
+            return;
+        }
+
+        MEU_ENDERECO = {
+            cep: cep,
+            endereco: endereco,
+            bairro: bairro,
+            cidade: cidade,
+            uf: uf,
+            numero: numero,
+            complemento: complemento
+        }
+
+        cardapio.metodos.carregarEtapas(3);
     },
 
     mensagem: (texto, cor = 'red', tempo = 3500) => {
