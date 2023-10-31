@@ -10,6 +10,8 @@ var MEU_ENDERECO = null;
 var VALOR_CARRINHO = 0;
 var VALOR_ENTREGA = 5;
 
+var CELULAR_EMPRESA = '5592996046011';
+
 cardapio.eventos = {
 
     init: () => {
@@ -44,7 +46,7 @@ cardapio.metodos = {
             if (!vermais && i < 8) {
                 $("#itensCardapio").append(temp)
             }
-                
+
 
         })
 
@@ -66,7 +68,7 @@ cardapio.metodos = {
 
     diminuirQuantidade: (id) => {
 
-        let qntdAtual = parseInt ($("#qntd-" + id).text());
+        let qntdAtual = parseInt($("#qntd-" + id).text());
 
         if (qntdAtual > 0) {
             $("#qntd-" + id).text(qntdAtual - 1)
@@ -76,14 +78,14 @@ cardapio.metodos = {
 
     aumentarQuantidade: (id) => {
 
-        let qntdAtual = parseInt ($("#qntd-" + id).text());
+        let qntdAtual = parseInt($("#qntd-" + id).text());
         $("#qntd-" + id).text(qntdAtual + 1);
 
     },
 
     adicionarAoCarrinho: (id) => {
 
-        let qntdAtual = parseInt ($("#qntd-" + id).text());
+        let qntdAtual = parseInt($("#qntd-" + id).text());
 
         if (qntdAtual > 0) {
 
@@ -91,17 +93,20 @@ cardapio.metodos = {
 
             let filtro = MENU[categoria];
 
-            let item = $.grep(filtro, (e, i) => { return e.id == id });
+            let item = $.grep(filtro, (e, i) => {
+                return e.id == id
+            });
 
             if (item.length > 0) {
 
-                let existe = $.grep(MEU_CARRINHO, (elem, index) => { return elem.id == id });
+                let existe = $.grep(MEU_CARRINHO, (elem, index) => {
+                    return elem.id == id
+                });
 
                 if (existe.length > 0) {
                     let objIndex = MEU_CARRINHO.findIndex((obj => obj.id == id));
                     MEU_CARRINHO[objIndex].qntd = MEU_CARRINHO[objIndex].qntd + qntdAtual;
-                }
-                else {
+                } else {
 
                     item[0].qntd = qntdAtual;
                     MEU_CARRINHO.push(item[0])
@@ -130,8 +135,7 @@ cardapio.metodos = {
         if (total > 0) {
             $(".botao-carrinho").removeClass('hidden')
             $(".container-total-carrinho").removeClass('hidden')
-        }
-        else{
+        } else {
             $(".botao-carrinho").addClass('hidden')
             $(".container-total-carrinho").addClass('hidden')
         }
@@ -146,8 +150,7 @@ cardapio.metodos = {
         if (abrir) {
             $("#modalCarrinho").removeClass('hidden');
             cardapio.metodos.carregarCarrinho();
-        }
-        else {
+        } else {
             $("#modalCarrinho").addClass('hidden');
         }
 
@@ -186,7 +189,7 @@ cardapio.metodos = {
             $("#btnEtapaResumo").addClass('hidden');
             $("#btnVoltar").removeClass('hidden');
         }
-        
+
         if (etapa == 3) {
             $("#lblTituloEtapa").text('Resumo do pedido:');
             $("#itensCarrinho").addClass('hidden');
@@ -225,10 +228,10 @@ cardapio.metodos = {
             $.each(MEU_CARRINHO, (i, e) => {
 
                 let temp = cardapio.templates.itemCarrinho.replace(/\${img}/g, e.img)
-                .replace(/\${name}/g, e.name)
-                .replace(/\${price}/g, e.price.toFixed(2).replace('.', ','))
-                .replace(/\${id}/g, e.id)
-                .replace(/\${qntd}/g, e.qntd)
+                    .replace(/\${name}/g, e.name)
+                    .replace(/\${price}/g, e.price.toFixed(2).replace('.', ','))
+                    .replace(/\${id}/g, e.id)
+                    .replace(/\${qntd}/g, e.qntd)
 
                 $("#itensCarrinho").append(temp);
 
@@ -238,8 +241,7 @@ cardapio.metodos = {
 
             })
 
-        }
-        else {
+        } else {
             $("#itensCarrinho").html('<p class="carrinho-vazio"><i class="fa fa-shopping-bag"></i> Seu carrinho está vazio.</p>');
             cardapio.metodos.carregarValores();
         }
@@ -248,13 +250,12 @@ cardapio.metodos = {
 
     diminuirQuantidadeCarrinho: (id) => {
 
-        let qntdAtual = parseInt ($("#qntd-carrinho-" + id).text());
+        let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
 
         if (qntdAtual > 1) {
             $("#qntd-carrinho-" + id).text(qntdAtual - 1);
             cardapio.metodos.atualizarCarrinho(id, qntdAtual - 1);
-        }
-        else {
+        } else {
             cardapio.metodos.removerItemCarrinho(id)
         }
 
@@ -262,14 +263,16 @@ cardapio.metodos = {
 
     aumentarQuantidadeCarrinho: (id) => {
 
-        let qntdAtual = parseInt ($("#qntd-carrinho-" + id).text());
+        let qntdAtual = parseInt($("#qntd-carrinho-" + id).text());
         $("#qntd-carrinho-" + id).text(qntdAtual + 1);
         cardapio.metodos.atualizarCarrinho(id, qntdAtual + 1);
     },
 
     removerItemCarrinho: (id) => {
 
-        MEU_CARRINHO = $.grep(MEU_CARRINHO, (e, i) => { return e.id != id });
+        MEU_CARRINHO = $.grep(MEU_CARRINHO, (e, i) => {
+            return e.id != id
+        });
         cardapio.metodos.carregarCarrinho();
 
         cardapio.metodos.atuslizarBadgeTotal();
@@ -280,7 +283,7 @@ cardapio.metodos = {
 
         let objIndex = MEU_CARRINHO.findIndex((obj => obj.id == id));
         MEU_CARRINHO[objIndex].qntd = qntd;
-        
+
         cardapio.metodos.atuslizarBadgeTotal();
 
         cardapio.metodos.carregarValores();
@@ -342,22 +345,19 @@ cardapio.metodos = {
                         $("#txtCidade").val(dados.localidade);
                         $("#ddlUf").val(dados.uf);
                         $("#txtNumero").focus();
-                    }
-                    else {
+                    } else {
                         cardapio.metodos.mensagem('CEP não encontrado. Preencha os dados manualmente.');
                         $("#txtEndereco").focus();
                     }
 
                 })
 
-            }
-            else {
+            } else {
                 cardapio.metodos.mensagem('Formato do CEP inválido.');
                 $("#txtCep").focus();
             }
 
-        }
-        else {
+        } else {
             cardapio.metodos.mensagem('Informe o CEP, por favor.');
             $("#txtCep").focus();
         }
@@ -366,7 +366,7 @@ cardapio.metodos = {
 
     //validar os campos obrigatorios da etapa2
     resumoPedido: () => {
-        
+
         let cep = $("#txtCep").val().trim();
         let endereco = $("#txtEndereco").val().trim();
         let bairro = $("#txtBairro").val().trim();
@@ -437,7 +437,45 @@ cardapio.metodos = {
         });
 
         $("#resumoEndereco").html(`${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`);
-        $("#cidadeEndereco").html(`${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`); 
+        $("#cidadeEndereco").html(`${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`);
+
+        cardapio.metodos.finalizarPedido();
+
+    },
+
+    // atualiza o botão do WhatsApp
+    finalizarPedido: () => {
+
+        if (MEU_CARRINHO.length > 0 && MEU_ENDERECO != null) {
+
+            var texto = 'Olá! gostaria de fazer um pedido:';
+            texto += `\n*Itens do pedido:*\n\n\${itens}`;
+            texto += `\n*Endereço de entrega:*`;
+            texto += `\n${MEU_ENDERECO.endereco}, ${MEU_ENDERECO.numero}, ${MEU_ENDERECO.bairro}`;
+            texto += `\n${MEU_ENDERECO.cidade}-${MEU_ENDERECO.uf} / ${MEU_ENDERECO.cep} ${MEU_ENDERECO.complemento}`;
+            texto += `\n\n*Total (com entrega): R$ ${(VALOR_CARRINHO + VALOR_ENTREGA).toFixed(2).replace('.', ',')}*`;
+
+            var itens = '';
+
+            $.each(MEU_CARRINHO, (i, e) => {
+
+                itens += `*${e.qntd}x* ${e.name} ....... R$ ${e.price.toFixed(2).replace('.', ',')} \n`;
+
+                if ((i + 1) == MEU_CARRINHO.length) {
+
+                    texto = texto.replace(/\${itens}/g, itens);
+
+                    // converte a URL (encode)
+                    let encode = encodeURI(texto);
+                    let URL = `https://wa.me/${CELULAR_EMPRESA}?text=${encode}`;
+
+                    $("#btnEtapaResumo").attr('href', URL);
+
+                }
+
+            })
+
+        }
 
     },
 

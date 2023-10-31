@@ -1,6 +1,5 @@
 var MENU = {
-    "churrasco": [
-        {
+    "churrasco": [{
             "id": "ribs-brisket-and-burnt-ends",
             "img": "./img/cardapio/churrasco/joes-kc-ribs-brisket-and-burnt-ends.6710e994980e485e6441b794717ad6fb.jpg",
             "name": "Joe's KC BBQ",
@@ -85,8 +84,7 @@ var MENU = {
             "price": 269
         }
     ],
-    "burgers": [
-        {
+    "burgers": [{
             "id": "the-gramercy-tavern-burger-4-pack",
             "img": "./img/cardapio/burguers/Gramercy-Tavern-Burger-and-Kielbasa-Kit-6.4.21-72ppi-1x1-15.jpg",
             "name": "Gramercy Tavern",
@@ -171,8 +169,7 @@ var MENU = {
             "price": 149
         }
     ],
-    "sobremesas": [
-        {
+    "sobremesas": [{
             "id": "15259-german-chocolate-killer-brownie-tin-pack",
             "img": "./img/cardapio/sobremesas/german-chocolate-killer-brownie-tin-pack.5ebc34160f28767a9d94c4da2e04c4b9.jpg",
             "name": "Killer Brownie®",
@@ -257,8 +254,7 @@ var MENU = {
             "price": 69.95
         }
     ],
-    "bebidas": [
-        {
+    "bebidas": [{
             "id": "hong-kong-boba-tea-kit-for-6",
             "img": "./img/cardapio/bebidas/hong-kong-boba-tea-kit-for-6.63841de36d8e5edfafa13023fc303285.jpg",
             "name": "New Territories",
@@ -310,7 +306,7 @@ var MENU = {
         {
             "id": "chickpea-chiller-kit-for-6",
             "img": "./img/cardapio/bebidas/chickpea-chiller-kit-for-6.4310765c71ba524b5462ea9330d32446.jpg",
-            "name": "The Hummus & Pita Co.",
+            "name": "The Hummus and Pita Co.",
             "dsc": "Chickpea Chiller Kit for 6",
             "price": 89
         },
@@ -343,8 +339,7 @@ var MENU = {
             "price": 40
         }
     ],
-    "pizzas": [
-        {
+    "pizzas": [{
             "id": "2-lou-malnatis-deep-dish-pizzas",
             "img": "./img/cardapio/pizzas/2-lou-malnatis-deep-dish-pizzas.bf0fe065d251a9cca3925b269d443a27.jpg",
             "name": "Lou Malnati's Pizza",
@@ -429,8 +424,7 @@ var MENU = {
             "price": 79
         }
     ],
-    "steaks": [
-        {
+    "steaks": [{
             "id": "california-reserve-filet-mignon-steaks-gift-box",
             "img": "./img/cardapio/steaks/california-reserve-filet-mignon-steaks-gift-box.bf226e317aad85f47897ae7e325f790d.jpg",
             "name": "Flannery Beef",
